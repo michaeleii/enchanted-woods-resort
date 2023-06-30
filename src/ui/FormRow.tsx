@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React from "react";
+import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 
 const StyledFormRow = styled.div`
   display: grid;
@@ -42,7 +43,11 @@ function FormRow({
   children,
 }: {
   label?: string;
-  error?: string;
+  error?:
+    | string
+    | FieldError
+    | Merge<FieldError, FieldErrorsImpl<any>>
+    | undefined;
   children: React.ReactNode;
 }) {
   if (!children) return null;
