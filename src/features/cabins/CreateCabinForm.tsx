@@ -7,11 +7,10 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { toast } from "react-toastify";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createEditCabin } from "../../services/apiCabins";
 import FormRow from "../../ui/FormRow";
 import CabinData from "../../interfaces/CabinData";
+import { useCreateCabin } from "./useCreateCabin";
+import { useEditCabin } from "./useEditCabin";
 
 const CabinSchema = z
   .object({
@@ -38,9 +37,11 @@ interface CreateCabinFormProps {
 }
 
 function CreateCabinForm({ cabinToEdit }: CreateCabinFormProps) {
+  const { isCreating, createCabin } = useCreateCabin();
+  const { isEditing, editCabin } = useEditCabin();
   const { id: editId, ...editValues } = cabinToEdit || ({} as CabinData);
   const editMode = !!editId;
-  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
@@ -59,46 +60,21 @@ function CreateCabinForm({ cabinToEdit }: CreateCabinFormProps) {
       : {},
     resolver: zodResolver(CabinSchema),
   });
-  const { mutate: createCabin, isLoading: isCreating } = useMutation({
-    mutationFn: createEditCabin,
-    onSuccess: () => {
-      toast.success("Cabin created successfully", { autoClose: 3000 });
-      queryClient.invalidateQueries({ queryKey: ["cabin"] });
-      reset();
-    },
-    onError: (err) => {
-      if (err instanceof Error) toast.error(err.message, { autoClose: 5000 });
-    },
-  });
-  const { mutate: editCabin, isLoading: isEditing } = useMutation({
-    mutationFn: ({
-      cabinData,
-      id,
-    }: {
-      cabinData: CabinSchemaType;
-      id: number;
-    }) => createEditCabin(cabinData, id),
-    onSuccess: () => {
-      toast.success("Cabin edited successfully", { autoClose: 3000 });
-      queryClient.invalidateQueries({ queryKey: ["cabin"] });
-      reset();
-    },
-    onError: (err) => {
-      if (err instanceof Error) toast.error(err.message, { autoClose: 5000 });
-    },
-  });
 
   const onSubmit: SubmitHandler<CabinSchemaType> = (data) => {
     const image = typeof data.image === "string" ? data.image : data.image[0];
     editMode
-      ? editCabin({
-          cabinData: {
-            ...data,
-            image,
+      ? editCabin(
+          {
+            cabinData: {
+              ...data,
+              image,
+            },
+            id: editId,
           },
-          id: editId,
-        })
-      : createCabin({ ...data, image });
+          { onSuccess: () => reset() }
+        )
+      : createCabin({ ...data, image }, { onSuccess: () => reset() });
   };
 
   const isSubmitting = isCreating || isEditing;
