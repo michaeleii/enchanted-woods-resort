@@ -55,7 +55,7 @@ function App() {
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       <GlobalStyles />
       <RouterProvider router={router} />
-      <ToastContainer />
+      <ToastContainer toastClassName="toast" />
     </QueryClientProvider>
   );
 }

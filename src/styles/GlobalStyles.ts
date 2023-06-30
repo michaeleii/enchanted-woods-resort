@@ -182,6 +182,10 @@ FOR DARK MODE
 --image-grayscale: 10%;
 --image-opacity: 90%;
 */
+.toast {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+}
 `;
 
 export default GlobalStyles;
