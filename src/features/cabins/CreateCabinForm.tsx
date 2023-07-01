@@ -34,9 +34,10 @@ export type CabinSchemaType = z.infer<typeof CabinSchema>;
 
 interface CreateCabinFormProps {
   cabinToEdit?: CabinData;
+  onCloseModal?: () => void;
 }
 
-function CreateCabinForm({ cabinToEdit }: CreateCabinFormProps) {
+function CreateCabinForm({ cabinToEdit, onCloseModal }: CreateCabinFormProps) {
   const { isCreating, createCabin } = useCreateCabin();
   const { isEditing, editCabin } = useEditCabin();
   const { id: editId, ...editValues } = cabinToEdit || ({} as CabinData);
@@ -75,12 +76,16 @@ function CreateCabinForm({ cabinToEdit }: CreateCabinFormProps) {
           { onSuccess: () => reset() }
         )
       : createCabin({ ...data, image }, { onSuccess: () => reset() });
+    onCloseModal?.();
   };
 
   const isSubmitting = isCreating || isEditing;
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form
+      onSubmit={handleSubmit(onSubmit)}
+      type={onCloseModal ? "modal" : "regular"}
+    >
       <FormRow label="Cabin name" error={errors?.name?.message}>
         <Input
           type="text"
@@ -143,7 +148,12 @@ function CreateCabinForm({ cabinToEdit }: CreateCabinFormProps) {
       </FormRow>
 
       <FormRow>
-        <Button variation="secondary" type="reset" disabled={isSubmitting}>
+        <Button
+          variation="secondary"
+          type="reset"
+          disabled={isSubmitting}
+          onClick={() => onCloseModal?.()}
+        >
           Cancel
         </Button>
         <Button disabled={isSubmitting}>

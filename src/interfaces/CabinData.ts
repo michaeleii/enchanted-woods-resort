@@ -1,12 +1,12 @@
 interface CabinData {
-  created_at: string;
-  description: string;
-  discount: number;
+  created_at: string | null;
+  description: string | null;
+  discount: number | null;
   id: number;
-  image: string;
-  max_capacity: number;
-  name: string;
-  regular_price: number;
+  image: string | null;
+  max_capacity: number | null;
+  name: string | null;
+  regular_price: number | null;
 }
 
 export default CabinData;

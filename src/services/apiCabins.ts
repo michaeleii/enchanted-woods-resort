@@ -1,4 +1,3 @@
-import { CabinSchemaType } from "../features/cabins/CreateCabinForm";
 import supabase, { supabaseUrl } from "./supabase";
 
 async function getCabins() {
@@ -11,7 +10,17 @@ async function getCabins() {
   return data;
 }
 
-async function createEditCabin(cabin: CabinSchemaType, id?: number) {
+async function createEditCabin(
+  cabin: {
+    name: string;
+    maxCapacity: number | null;
+    regularPrice: number | null;
+    discount: number | null;
+    description: string | null;
+    image: string | null;
+  },
+  id?: number
+) {
   const hasImagePath = cabin.image?.startsWith?.(supabaseUrl);
   const imageName = `${Math.random()}-${cabin.image.name}`.replace("/", "");
   const imagePath = hasImagePath
