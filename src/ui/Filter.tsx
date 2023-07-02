@@ -1,4 +1,6 @@
+import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
+import SortBy from "./SortBy";
 
 const StyledFilter = styled.div`
   border: 1px solid var(--color-grey-100);
@@ -10,7 +12,9 @@ const StyledFilter = styled.div`
   gap: 0.4rem;
 `;
 
-const FilterButton = styled.button`
+const FilterButton = styled.button<{
+  active?: boolean;
+}>`
   background-color: var(--color-grey-0);
   border: none;
 
@@ -33,3 +37,49 @@ const FilterButton = styled.button`
     color: var(--color-brand-50);
   }
 `;
+
+function Filter({
+  filterField,
+  options,
+}: {
+  filterField: string;
+  options: { value: string; label: string }[];
+}) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentFilter = searchParams.get(filterField) || options[0].value;
+  function handleClick(value: string) {
+    searchParams.set(filterField, value);
+    setSearchParams(searchParams);
+  }
+  return (
+    <StyledFilter>
+      {options.map((option) => (
+        <FilterButton
+          key={option.value}
+          onClick={() => handleClick(option.value)}
+          active={currentFilter === option.value}
+          disabled={currentFilter === option.value}
+        >
+          {option.label}
+        </FilterButton>
+      ))}
+      <SortBy
+        options={[
+          { value: "name-asc", label: "Sort by name (A-Z)" },
+          { value: "name-desc", label: "Sort by name (Z-A)" },
+          { value: "regular_price-asc", label: "Sort by price (low to high)" },
+          { value: "regular_price-desc", label: "Sort by price (high to low)" },
+          {
+            value: "max_capacity-asc",
+            label: "Sort by max capacity (low to high)",
+          },
+          {
+            value: "max_capacity-desc",
+            label: "Sort by max capacity (high to low)",
+          },
+        ]}
+      />
+    </StyledFilter>
+  );
+}
+export default Filter;
