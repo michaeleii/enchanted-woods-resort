@@ -1,6 +1,5 @@
 import { createContext, useContext } from "react";
 import styled from "styled-components";
-import CabinData from "../interfaces/CabinData";
 
 const StyledTable = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -99,8 +98,8 @@ function Body({
   data,
   render,
 }: {
-  data: CabinData[];
-  render: (cabin: CabinData) => JSX.Element;
+  data: any[];
+  render: (resource: any) => JSX.Element;
 }) {
   if (!data.length) return <Empty>No data to show at the moment</Empty>;
   return <StyledBody role="rowgroup">{data.map(render)}</StyledBody>;
