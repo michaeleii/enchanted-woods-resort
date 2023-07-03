@@ -5,21 +5,34 @@ export async function getBookings({
   filter,
   sortBy,
 }: {
-  filter?: { status: string; field: string };
-  sortBy?: { field: string; order: "asc" | "desc" };
+  filter?: { status: string; field: string; method?: "gte" | "lte" };
+  sortBy?: { field: string; direction: string };
 }) {
-  const { data, error } = filter
-    ? await supabase
-        .from("booking")
-        .select(
-          "id, created_at, start_date, end_date, num_nights, num_guests, status, total_price, cabin(name), guest(full_name, email)"
-        )
-        .eq("status", filter.status)
-    : await supabase
-        .from("booking")
-        .select(
-          "id, created_at, start_date, end_date, num_nights, num_guests, status, total_price, cabin(name), guest(full_name, email)"
-        );
+  let query = supabase
+    .from("booking")
+    .select(
+      "id, created_at, start_date, end_date, num_nights, num_guests, status, total_price, cabin(name), guest(full_name, email)"
+    );
+  if (filter) query = query[filter.method || "eq"](filter.field, filter.status);
+  if (sortBy) {
+    query = query.order(sortBy.field, {
+      ascending: sortBy.direction === "asc",
+      foreignTable: "",
+    });
+  }
+  const { data, error } = await query;
+  // const { data, error } = filter
+  //   ? await supabase
+  //       .from("booking")
+  //       .select(
+  //         "id, created_at, start_date, end_date, num_nights, num_guests, status, total_price, cabin(name), guest(full_name, email)"
+  //       ) //eslint-disable-next-line
+  //       [filter.method || "eq"]("status", filter.status)
+  //   : await supabase
+  //       .from("booking")
+  //       .select(
+  //         "id, created_at, start_date, end_date, num_nights, num_guests, status, total_price, cabin(name), guest(full_name, email)"
+  //       );
 
   if (error) {
     console.error(error);
