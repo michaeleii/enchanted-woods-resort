@@ -1,45 +1,42 @@
+import { PAGE_SIZE } from "../utils/constants";
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
 export async function getBookings({
   filter,
   sortBy,
+  page,
 }: {
   filter?: { status: string; field: string; method?: "gte" | "lte" };
   sortBy?: { field: string; direction: string };
+  page?: number;
 }) {
   let query = supabase
     .from("booking")
     .select(
-      "id, created_at, start_date, end_date, num_nights, num_guests, status, total_price, cabin(name), guest(full_name, email)"
+      "id, created_at, start_date, end_date, num_nights, num_guests, status, total_price, cabin(name), guest(full_name, email)",
+      { count: "exact" }
     );
   if (filter) query = query[filter.method || "eq"](filter.field, filter.status);
-  if (sortBy) {
+  if (sortBy)
     query = query.order(sortBy.field, {
       ascending: sortBy.direction === "asc",
       foreignTable: "",
     });
+  if (page) {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+    query = query.range(from, to);
   }
-  const { data, error } = await query;
-  // const { data, error } = filter
-  //   ? await supabase
-  //       .from("booking")
-  //       .select(
-  //         "id, created_at, start_date, end_date, num_nights, num_guests, status, total_price, cabin(name), guest(full_name, email)"
-  //       ) //eslint-disable-next-line
-  //       [filter.method || "eq"]("status", filter.status)
-  //   : await supabase
-  //       .from("booking")
-  //       .select(
-  //         "id, created_at, start_date, end_date, num_nights, num_guests, status, total_price, cabin(name), guest(full_name, email)"
-  //       );
+
+  const { data, error, count } = await query;
 
   if (error) {
     console.error(error);
     throw new Error("Bookings could not get loaded");
   }
 
-  return data;
+  return { data, count };
 }
 
 export async function getBooking(id: number) {
