@@ -1,7 +1,23 @@
 import supabase, { supabaseUrl } from "./supabase";
 
-async function getCabins() {
-  const { data, error } = await supabase.from("cabin").select("*");
+async function getCabins({
+  filter,
+  sortBy,
+}: {
+  filter?: { discount: string; field: string; method?: "gte" | "lte" };
+  sortBy?: { field: string; direction: string };
+}) {
+  let query = supabase.from("cabin").select("*");
+  if (filter)
+    query = query[filter.method || "eq"](filter.field, filter.discount);
+  if (sortBy) {
+    query = query.order(sortBy.field, {
+      ascending: sortBy.direction === "asc",
+      foreignTable: "",
+    });
+  }
+  const { data, error } = await query;
+
   if (error) {
     console.error(error);
     throw new Error("Cabins could not be loaded");
@@ -22,7 +38,8 @@ async function createEditCabin(
   id?: number
 ) {
   const hasImagePath = cabin.image?.startsWith?.(supabaseUrl);
-  const imageName = `${Math.random()}-${cabin.image.name}`.replace("/", "");
+  const imageName =
+    !cabin.image || `${Math.random()}-${cabin.image.name}`.replace("/", "");
   const imagePath = hasImagePath
     ? cabin.image
     : `${supabaseUrl}/storage/v1/object/public/cabin_images/${imageName}`;
