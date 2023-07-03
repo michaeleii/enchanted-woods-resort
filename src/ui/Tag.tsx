@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Tag = styled.span<{
-  type: "blue" | "green" | "silver";
+  type: string;
 }>`
   width: fit-content;
   text-transform: uppercase;

@@ -9,6 +9,9 @@ import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
+import { useBooking } from "./useBooking";
+import Empty from "../../ui/Empty";
+import Spinner from "../../ui/Spinner";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -17,12 +20,16 @@ const HeadingGroup = styled.div`
 `;
 
 function BookingDetail() {
-  const booking = {};
-  const status = "checked-in";
-
+  const { booking, isLoading } = useBooking();
   const moveBack = useMoveBack();
 
-  const statusToTagName = {
+  if (isLoading) return <Spinner />;
+  if (!booking) return <Empty resource="booking" />;
+  const { status, id: bookingId } = booking;
+
+  const statusToTagName: {
+    [status: string]: string;
+  } = {
     unconfirmed: "blue",
     "checked-in": "green",
     "checked-out": "silver",
@@ -32,13 +39,15 @@ function BookingDetail() {
     <>
       <Row type="horizontal">
         <HeadingGroup>
-          <Heading as="h1">Booking #X</Heading>
-          <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+          <Heading as="h1">Booking #{bookingId}</Heading>
+          <Tag type={statusToTagName[status || "unconfimed"]}>
+            {status ? status.replace("-", " ") : "unconfirmed"}
+          </Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
 
-      <BookingDataBox booking={booking} />
+      <BookingDataBox booking={booking as any} />
 
       <ButtonGroup>
         <Button variation="secondary" onClick={moveBack}>

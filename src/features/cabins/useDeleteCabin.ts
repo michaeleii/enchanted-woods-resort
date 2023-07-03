@@ -8,7 +8,7 @@ function useDeleteCabin() {
     mutationFn: deleteCabinApi,
     onSuccess: () => {
       toast.success("Cabin deleted successfully", { autoClose: 3000 });
-      queryClient.invalidateQueries({ queryKey: ["cabin"] });
+      queryClient.invalidateQueries({ queryKey: ["cabins"] });
     },
     onError: (err) => {
       if (err instanceof Error) toast.error(err.message, { autoClose: 5000 });

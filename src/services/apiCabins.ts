@@ -1,13 +1,18 @@
+import { PAGE_SIZE } from "../utils/constants";
 import supabase, { supabaseUrl } from "./supabase";
 
 async function getCabins({
   filter,
   sortBy,
+  page,
 }: {
   filter?: { discount: string; field: string; method?: "gte" | "lte" };
   sortBy?: { field: string; direction: string };
+  page?: number;
 }) {
-  let query = supabase.from("cabin").select("*");
+  let query = supabase.from("cabin").select("*", {
+    count: "exact",
+  });
   if (filter)
     query = query[filter.method || "eq"](filter.field, filter.discount);
   if (sortBy) {
@@ -16,14 +21,21 @@ async function getCabins({
       foreignTable: "",
     });
   }
-  const { data, error } = await query;
+  if (page) {
+    if (page) {
+      const from = (page - 1) * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
+      query = query.range(from, to);
+    }
+  }
+  const { data, error, count } = await query;
 
   if (error) {
     console.error(error);
     throw new Error("Cabins could not be loaded");
   }
 
-  return data;
+  return { data, count };
 }
 
 async function createEditCabin(

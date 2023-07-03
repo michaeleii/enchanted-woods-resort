@@ -6,9 +6,11 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import GlobalStyles from "./styles/GlobalStyles";
+import "react-toastify/dist/ReactToastify.min.css";
 
 import Dashboard from "./pages/Dashboard";
 import Bookings from "./pages/Bookings";
@@ -19,8 +21,7 @@ import PageNotFound from "./pages/PageNotFound";
 import Users from "./pages/Users";
 import AppLayout from "./ui/AppLayout";
 import Cabins from "./pages/Cabins";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Booking from "./pages/Booking";
 
 // You can do this:
 const router = createBrowserRouter(
@@ -30,6 +31,7 @@ const router = createBrowserRouter(
         <Route index element={<Navigate replace to="dashboard" />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="bookings" element={<Bookings />} />
+        <Route path="booking/:bookingId" element={<Booking />} />
         <Route path="cabins" element={<Cabins />} />
         <Route path="users" element={<Users />} />
         <Route path="settings" element={<Settings />} />
