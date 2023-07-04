@@ -25,7 +25,7 @@ function UpdateUserDataForm() {
       {
         onSuccess: () => {
           setAvatar(null);
-          e.currentTarget.reset();
+          if (e.currentTarget) e.currentTarget.reset();
         },
       }
     );
@@ -44,6 +44,7 @@ function UpdateUserDataForm() {
         <Input
           type="text"
           value={fullName}
+          disabled={isUpdating}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setFullName(e.target.value)
           }
