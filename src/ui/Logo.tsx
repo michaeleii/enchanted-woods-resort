@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 const StyledLogo = styled.div`
   text-align: center;
-  margin-bottom: 2rem;
 `;
 
 const Img = styled.img`
@@ -19,13 +18,17 @@ const LogoText = styled.p`
   text-transform: uppercase;
   letter-spacing: 0.2em;
   text-shadow: 1px 1px var(--color-grey-100);
+  margin-top: 1rem;
 `;
 
 function Logo() {
   return (
     <StyledLogo>
       <Img src="/logo.webp" alt="Logo" />
-      <LogoText>Enchanted Woods Resort</LogoText>
+      <LogoText>
+        Enchanted Woods <br />
+        Resort
+      </LogoText>
     </StyledLogo>
   );
 }

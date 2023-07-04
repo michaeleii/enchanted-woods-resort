@@ -22,13 +22,20 @@ import Users from "./pages/Users";
 import AppLayout from "./ui/AppLayout";
 import Cabins from "./pages/Cabins";
 import Booking from "./pages/Booking";
-import Checkin from "./pages/CheckIn";
+import Checkin from "./pages/Checkin";
+import ProtectedRoute from "./ui/ProtectedRoute";
 
 // You can do this:
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route element={<AppLayout />}>
+      <Route
+        element={
+          <ProtectedRoute>
+            <AppLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<Navigate replace to="dashboard" />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="bookings" element={<Bookings />} />
