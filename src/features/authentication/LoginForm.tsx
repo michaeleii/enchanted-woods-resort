@@ -26,7 +26,7 @@ function LoginForm() {
   }
 
   return (
-    <Form onSubmit={handleSubmit} type="regular">
+    <Form onSubmit={handleSubmit}>
       <FormRowVertical label="Email address">
         <Input
           type="email"
