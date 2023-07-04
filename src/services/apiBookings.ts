@@ -112,6 +112,7 @@ export async function updateBooking(
   id: number,
   obj: {
     status?: string;
+    is_paid?: boolean;
   }
 ) {
   const { data, error } = await supabase
