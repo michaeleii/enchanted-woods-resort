@@ -85,7 +85,7 @@ function CheckinBooking() {
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
 
-      <BookingDataBox booking={booking as any} />
+      <BookingDataBox booking={booking} />
       {!has_breakfast && (
         <Box>
           <Checkbox

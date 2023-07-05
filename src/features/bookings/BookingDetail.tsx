@@ -55,7 +55,7 @@ function BookingDetail() {
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
 
-      <BookingDataBox booking={booking as any} />
+      <BookingDataBox booking={booking} />
       <Modal>
         <ButtonGroup>
           {status === "unconfirmed" && (

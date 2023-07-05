@@ -6,10 +6,15 @@ type DarkModeContextType = {
   toggleDarkMode: () => void;
 };
 
-const DarkModeContext = createContext<DarkModeContextType>({} as any);
+const DarkModeContext = createContext<DarkModeContextType>(
+  {} as DarkModeContextType
+);
 
 function DarkModeProvider({ children }: { children: React.ReactNode }) {
   const [isDarkMode, setIsDarkMode] = useLocalStorageState(false, "isDarkMode");
+  function toggleDarkMode() {
+    setIsDarkMode((isDark: boolean) => !isDark);
+  }
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark-mode");
@@ -19,9 +24,7 @@ function DarkModeProvider({ children }: { children: React.ReactNode }) {
       document.documentElement.classList.remove("dark-mode");
     }
   }, [isDarkMode]);
-  function toggleDarkMode() {
-    setIsDarkMode((isDark: boolean) => !isDark);
-  }
+
   return (
     <DarkModeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
       {children}

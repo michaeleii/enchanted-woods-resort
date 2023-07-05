@@ -44,6 +44,8 @@ async function getCurrentUser() {
   return user;
 }
 
+export type CurrentUser = Awaited<ReturnType<typeof getCurrentUser>>;
+
 async function updateCurrentUser({
   password,
   full_name,

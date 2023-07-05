@@ -11,6 +11,7 @@ import DataItem from "../../ui/DataItem";
 import { Flag } from "../../ui/Flag";
 
 import { formatDistanceFromNow, formatCurrency } from "../../utils/helpers";
+import { BookingData } from "../../services/apiBookings";
 
 const StyledBookingDataBox = styled.section`
   /* Box */
@@ -104,33 +105,9 @@ const Footer = styled.footer`
 `;
 
 // A purely presentational component
-function BookingDataBox({
-  booking,
-}: {
-  booking: {
-    created_at: string;
-    start_date: string;
-    end_date: string;
-    num_nights: number;
-    num_guests: number;
-    cabin_price: number;
-    extra_price: number;
-    total_price: number;
-    has_breakfast: boolean;
-    comments: string;
-    is_paid: boolean;
-    guest: {
-      full_name: string;
-      email: string;
-      country: string;
-      country_flag: string;
-      national_id: string;
-    };
-    cabin: {
-      name: string;
-    };
-  };
-}) {
+function BookingDataBox({ booking }: { booking: BookingData }) {
+  if (!booking || !booking.guest || !booking.cabin) return null;
+
   const {
     created_at,
     start_date,
@@ -143,9 +120,28 @@ function BookingDataBox({
     has_breakfast,
     comments,
     is_paid,
-    guest: { full_name: guestName, email, country, country_flag, national_id },
+    guest: {
+      full_name: guestName,
+      email,
+      nationality,
+      country_flag,
+      national_id,
+    },
     cabin: { name: cabinName },
   } = booking;
+
+  if (
+    !start_date ||
+    !end_date ||
+    !num_guests ||
+    !is_paid ||
+    !total_price ||
+    !cabin_price ||
+    !extra_price ||
+    !has_breakfast ||
+    !created_at
+  )
+    return null;
 
   return (
     <StyledBookingDataBox>
@@ -169,7 +165,7 @@ function BookingDataBox({
       <Section>
         <Guest>
           {country_flag && (
-            <Flag src={country_flag} alt={`Flag of ${country}`} />
+            <Flag src={country_flag} alt={`Flag of ${nationality}`} />
           )}
           <p>
             {guestName} {num_guests > 1 ? `+ ${num_guests - 1} guests` : ""}

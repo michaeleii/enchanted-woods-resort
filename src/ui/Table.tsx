@@ -68,7 +68,13 @@ const TableContext = createContext<{
   columns: "",
 });
 
-function Table({ columns, children }: { columns: string; children: any }) {
+function Table({
+  columns,
+  children,
+}: {
+  columns: string;
+  children: React.ReactNode;
+}) {
   return (
     <TableContext.Provider value={{ columns }}>
       <StyledTable role="table">{children}</StyledTable>
