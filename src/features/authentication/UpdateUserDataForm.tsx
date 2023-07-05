@@ -25,7 +25,6 @@ function UpdateUserDataForm() {
       {
         onSuccess: () => {
           setAvatar(null);
-          if (e.currentTarget) e.currentTarget.reset();
         },
       }
     );

@@ -24,6 +24,7 @@ import Cabins from "./pages/Cabins";
 import Booking from "./pages/Booking";
 import Checkin from "./pages/Checkin";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import DarkModeProvider from "./context/DarkModeContext";
 
 // You can do this:
 const router = createBrowserRouter(
@@ -62,12 +63,14 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-      <GlobalStyles />
-      <RouterProvider router={router} />
-      <ToastContainer toastClassName="toast" />
-    </QueryClientProvider>
+    <DarkModeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+        <GlobalStyles />
+        <RouterProvider router={router} />
+        <ToastContainer toastClassName="toast" />
+      </QueryClientProvider>
+    </DarkModeProvider>
   );
 }
 export default App;
