@@ -98,6 +98,7 @@ function Menus({ children }: { children: React.ReactNode }) {
 function Toggle({ id }: { id: number }) {
   const { openId, open, close, setPosition } = useContext(MenusContext);
   function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
     if (
       e.target &&
       (e.target instanceof HTMLButtonElement ||
@@ -121,7 +122,7 @@ function Toggle({ id }: { id: number }) {
 }
 function List({ id, children }: { id: number; children: React.ReactNode }) {
   const { openId, position, close } = useContext(MenusContext);
-  const ref = useOutsideClick<HTMLUListElement>(close);
+  const ref = useOutsideClick<HTMLUListElement>(close, false);
   if (openId !== id) return null;
   return createPortal(
     <StyledList position={position} ref={ref}>
