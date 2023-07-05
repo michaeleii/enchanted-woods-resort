@@ -70,7 +70,7 @@ const Guest = styled.div`
 `;
 
 const Price = styled.div<{
-  is_paid: boolean;
+  is_paid: boolean | null;
 }>`
   display: flex;
   align-items: center;
@@ -134,11 +134,9 @@ function BookingDataBox({ booking }: { booking: BookingData }) {
     !start_date ||
     !end_date ||
     !num_guests ||
-    !is_paid ||
     !total_price ||
     !cabin_price ||
     !extra_price ||
-    !has_breakfast ||
     !created_at
   )
     return null;

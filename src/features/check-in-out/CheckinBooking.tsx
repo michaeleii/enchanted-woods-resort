@@ -109,10 +109,10 @@ function CheckinBooking() {
         >
           I confirm that {guest?.full_name} has paid the total amount of{" "}
           {!addBreakfast
-            ? formatCurrency(total_price)
+            ? formatCurrency(total_price || 0)
             : `${formatCurrency(
                 total_price ? total_price + optionalBreakfastPrice : 0
-              )} (${formatCurrency(total_price)} + ${formatCurrency(
+              )} (${formatCurrency(total_price || 0)} + ${formatCurrency(
                 optionalBreakfastPrice
               )})`}
         </Checkbox>
