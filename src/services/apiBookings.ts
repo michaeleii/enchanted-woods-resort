@@ -39,6 +39,8 @@ export async function getBookings({
   return { data, count };
 }
 
+export type BookingsData = Awaited<ReturnType<typeof getBookings>>;
+
 export async function getBooking(id: number) {
   const { data, error } = await supabase
     .from("booking")
@@ -53,6 +55,8 @@ export async function getBooking(id: number) {
 
   return data;
 }
+
+export type BookingData = Awaited<ReturnType<typeof getBooking>>;
 
 // Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.
 export async function getBookingsAfterDate(date: string) {
@@ -112,6 +116,10 @@ export async function getStaysTodayActivity() {
   }
   return data;
 }
+
+export type StaysTodayActivityData = Awaited<
+  ReturnType<typeof getStaysTodayActivity>
+>;
 
 export async function updateBooking(
   id: number,

@@ -38,6 +38,8 @@ async function getCabins({
   return { data, count };
 }
 
+export type CabinsData = Awaited<ReturnType<typeof getCabins>>;
+
 async function createEditCabin(
   cabin: {
     name: string;
@@ -93,6 +95,8 @@ async function createEditCabin(
 
   return data;
 }
+
+export type CabinData = Awaited<ReturnType<typeof createEditCabin>>;
 
 async function deleteCabin(id: number) {
   const { error } = await supabase.from("cabin").delete().eq("id", id);

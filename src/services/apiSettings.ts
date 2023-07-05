@@ -10,6 +10,8 @@ async function getSettings() {
   return data;
 }
 
+export type SettingsData = Awaited<ReturnType<typeof getSettings>>;
+
 // We expect a newSetting object that looks like {setting: newValue}
 async function updateSetting(newSetting: { [field: string]: string }) {
   const { data, error } = await supabase
