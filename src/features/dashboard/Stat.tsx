@@ -14,7 +14,7 @@ const StyledStat = styled.div`
   row-gap: 0.4rem;
 `;
 
-const Icon = styled.div`
+const Icon = styled.div<{ color: string }>`
   grid-row: 1 / -1;
   aspect-ratio: 1;
   border-radius: 50%;
@@ -47,7 +47,17 @@ const Value = styled.p`
   font-weight: 500;
 `;
 
-function Stat({ icon, title, value, color }) {
+function Stat({
+  icon,
+  title,
+  value,
+  color,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  value: string | number | undefined;
+  color: string;
+}) {
   return (
     <StyledStat>
       <Icon color={color}>{icon}</Icon>
