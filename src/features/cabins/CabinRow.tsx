@@ -71,7 +71,7 @@ function CabinRow({ cabin }: CabinRowProps) {
       <Img src={image || undefined} />
       <Cabin>{name}</Cabin>
       <div>Fits up to {max_capacity} guests</div>
-      <Price>{formatCurrency(regular_price)}</Price>
+      <Price>{formatCurrency(regular_price || 0)}</Price>
       {discount ? (
         <Discount>{formatCurrency(discount)}</Discount>
       ) : (

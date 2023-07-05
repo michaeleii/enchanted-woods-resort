@@ -75,7 +75,7 @@ function CreateCabinForm({ cabinToEdit, onCloseModal }: CreateCabinFormProps) {
           },
           { onSuccess: () => reset() }
         )
-      : createCabin({ ...data, image }, { onSuccess: () => reset() });
+      : createCabin({ ...data, image } as any, { onSuccess: () => reset() });
     onCloseModal?.();
   };
 

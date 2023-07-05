@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../check-in-out/useCheckout";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-import { deleteBooking } from "../../services/apiBookings";
 import { useDeleteBooking } from "./useDeleteBooking";
 
 const Cabin = styled.div`
@@ -50,11 +49,11 @@ const Amount = styled.div`
 function BookingRow({
   booking: {
     id: bookingId,
-    created_at,
+
     start_date,
     end_date,
     num_nights,
-    num_guests,
+
     total_price,
     status,
     guest: { full_name: guestName, email },
@@ -63,11 +62,9 @@ function BookingRow({
 }: {
   booking: {
     id: number;
-    created_at: string;
     start_date: string;
     end_date: string;
     num_nights: number;
-    num_guests: number;
     total_price: number;
     status: string;
     guest: { full_name: string; email: string };

@@ -1,58 +1,61 @@
-import styled from 'styled-components';
-import { useGuests } from 'features/guests/useGuests';
-import Pagination from 'ui/Pagination';
-import Spinner from 'ui/Spinner';
-import GuestListItem from './GuestListItem';
+// import styled from "styled-components";
+// import { useGuests } from "features/guests/useGuests";
 
-const StyledGuestList = styled.div`
-  border: 1px solid var(--color-grey-200);
-  border-top: none;
-  border-bottom-left-radius: var(--border-radius-md);
-  border-bottom-right-radius: var(--border-radius-md);
-  overflow: hidden;
-  padding-top: 0.8rem;
-  transform: translateY(-4px);
-`;
+// import GuestListItem from "./GuestListItem";
+// import Spinner from "../../ui/Spinner";
+// import Pagination from "../../ui/Pagination";
 
-const List = styled.ul``;
+// const StyledGuestList = styled.div`
+//   border: 1px solid var(--color-grey-200);
+//   border-top: none;
+//   border-bottom-left-radius: var(--border-radius-md);
+//   border-bottom-right-radius: var(--border-radius-md);
+//   overflow: hidden;
+//   padding-top: 0.8rem;
+//   transform: translateY(-4px);
+// `;
 
-const PaginationContainer = styled.div`
-  border-top: 1px solid var(--color-grey-100);
-  background-color: var(--color-grey-50);
-  display: flex;
-  justify-content: center;
-  padding: 0.8rem;
+// const List = styled.ul``;
 
-  &:not(:has(*)) {
-    display: none;
-  }
-`;
+// const PaginationContainer = styled.div`
+//   border-top: 1px solid var(--color-grey-100);
+//   background-color: var(--color-grey-50);
+//   display: flex;
+//   justify-content: center;
+//   padding: 0.8rem;
 
-function GuestList({ onClick }) {
-  const { isLoading, guests, count } = useGuests();
+//   &:not(:has(*)) {
+//     display: none;
+//   }
+// `;
 
-  if (isLoading) return <Spinner />;
-  if (count === undefined) return null;
-  if (count === 0) return <p>No guests found...</p>;
+// function GuestList({ onClick }: { onClick?: (id: string) => void }) {
+//   const { isLoading, guests, count } = useGuests();
 
-  return (
-    <StyledGuestList>
-      <List>
-        {guests.map((guest) => (
-          <GuestListItem
-            key={guest.id}
-            guest={guest}
-            // For case where GuestList was used without the onClick function
-            onClick={onClick ? onClick : () => {}}
-          />
-        ))}
-      </List>
+//   if (isLoading) return <Spinner />;
+//   if (count === undefined) return null;
+//   if (count === 0) return <p>No guests found...</p>;
 
-      <PaginationContainer>
-        <Pagination count={count} />
-      </PaginationContainer>
-    </StyledGuestList>
-  );
-}
+//   return (
+//     <StyledGuestList>
+//       <List>
+//         {guests.map((guest) => (
+//           <GuestListItem
+//             key={guest.id}
+//             guest={guest}
+//             // For case where GuestList was used without the onClick function
+//             onClick={
+//               onClick ? onClick : () => console.log("No onClick function")
+//             }
+//           />
+//         ))}
+//       </List>
 
-export default GuestList;
+//       <PaginationContainer>
+//         <Pagination count={count} />
+//       </PaginationContainer>
+//     </StyledGuestList>
+//   );
+// }
+
+// export default GuestList;
